@@ -1,0 +1,3 @@
+# Make CMake functions available to downstream packages
+list(APPEND CMAKE_MODULE_PATH "@PACKAGE_CMAKE_INSTALL_PREFIX@/share/@PROJECT_NAME@/cmake")
+include("@PACKAGE_CMAKE_INSTALL_PREFIX@/share/@PROJECT_NAME@/cmake/ros2_schema_tools.cmake")

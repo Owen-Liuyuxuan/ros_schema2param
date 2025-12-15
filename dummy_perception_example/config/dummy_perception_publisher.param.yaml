@@ -1,0 +1,80 @@
+/**:
+  ros__parameters:
+    # Array of limits for lateral jerk (activated in AUTONOMOUS mode)
+    lat_jerk_lim_for_steer_cmd: [8.0, 7.0, 7.0, 6.0]
+    
+    # Maximum visible range for object detection in meters
+    visible_range: 120.0
+    
+    # Probability of successful object detection
+    detection_successful_rate: 0.8
+    
+    # Enable ray tracing for visibility calculation
+    enable_ray_tracing: true
+    
+    # Enable object recognition mode
+    use_object_recognition: true
+    
+    # Use base_link z coordinate for object positioning
+    use_base_link_z: true
+    
+    # Publish ground truth objects for evaluation
+    publish_ground_truth: false
+    
+    # Random seed for reproducible results
+    random_seed: 0
+    
+    # Use fixed random seed for deterministic behavior
+    use_fixed_random_seed: false
+    
+    # Generate point clouds centered on objects
+    object_centric_pointcloud: false
+    
+    # Angle increment for ray casting (0.25 degrees in radians)
+    angle_increment: 0.004363323
+    
+    # Minimum duration in seconds to keep using same prediction
+    min_predicted_path_keep_duration: 3.0
+    
+    # Time threshold in seconds to switch from straight-line to predicted path
+    switch_time_threshold: 2.0
+    
+    # Parameters for vehicle object validation
+    vehicle:
+      # Maximum distance in meters for remapping vehicles
+      max_remapping_distance: 2.0
+      
+      # Maximum speed difference ratio (default: 5% tolerance)
+      max_speed_difference_ratio: 1.05
+      
+      # Minimum speed ratio relative to dummy speed
+      min_speed_ratio: 0.5
+      
+      # Maximum speed ratio relative to dummy speed
+      max_speed_ratio: 1.5
+      
+      # Speed threshold in m/s above which to apply speed checks
+      speed_check_threshold: 1.0
+      
+      # Path selection strategy: highest_confidence or random
+      path_selection_strategy: "highest_confidence"
+    
+    # Parameters for pedestrian object validation
+    pedestrian:
+      # Maximum distance in meters for remapping pedestrians
+      max_remapping_distance: 3.0
+      
+      # Maximum speed difference ratio (default: 30% tolerance)
+      max_speed_difference_ratio: 1.3
+      
+      # Minimum speed ratio relative to dummy speed
+      min_speed_ratio: 0.3
+      
+      # Maximum speed ratio relative to dummy speed
+      max_speed_ratio: 2.0
+      
+      # Speed threshold in m/s above which to apply speed checks
+      speed_check_threshold: 0.5
+      
+      # Path selection strategy: highest_confidence or random
+      path_selection_strategy: "random"

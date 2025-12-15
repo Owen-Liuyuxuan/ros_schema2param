@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <node pkg="dummy_perception_example" exec="dummy_perception_node" name="dummy_perception_node" output="screen">
+    <param from="$(find-pkg-share dummy_perception_example)/config/dummy_perception_publisher.param.yaml"/>
+  </node>
+</launch>

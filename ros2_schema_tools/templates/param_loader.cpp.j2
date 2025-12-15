@@ -1,0 +1,225 @@
+// Auto-generated from JSON Schema
+// Generated at: {{ timestamp }}
+// DO NOT EDIT MANUALLY
+
+#include "{{ class_name }}.hpp"
+#include <algorithm>
+#include <stdexcept>
+#include <sstream>
+
+namespace {{ namespace }} {
+
+{% for struct in nested_structs %}
+void {{ struct.cpp_type }}::load(
+  rclcpp::Node * node,
+  const std::string & prefix)
+{
+  {% for param in struct.nested_params %}
+  {% if param.is_array %}
+  {{ param.cpp_name }} = node->get_parameter(prefix + ".{{ param.name.split('.')[-1] }}").{{ param.rclcpp_getter }}();
+  {% else %}
+  {{ param.cpp_name }} = node->get_parameter(prefix + ".{{ param.name.split('.')[-1] }}").{{ param.rclcpp_getter }}();
+  {% endif %}
+  {% endfor %}
+  
+  validate();
+}
+
+void {{ struct.cpp_type }}::declare_and_load(
+  rclcpp::Node * node,
+  const std::string & prefix)
+{
+  {% for param in struct.nested_params %}
+  {% if param.is_array %}
+  {{ param.cpp_name }} = node->declare_parameter<{{ param.cpp_type }}>(
+    prefix + ".{{ param.name.split('.')[-1] }}"{% if param.default %}, {{ param.default|cpp_array_default(param.array_item_type) }}{% endif %});
+  {% else %}
+  {{ param.cpp_name }} = node->declare_parameter<{{ param.cpp_type }}>(
+    prefix + ".{{ param.name.split('.')[-1] }}"{% if param.default %}, {{ param.default|cpp_default(param.cpp_type) }}{% endif %});
+  {% endif %}
+  {% endfor %}
+  
+  validate();
+}
+
+void {{ struct.cpp_type }}::validate() const {
+  {% for param in struct.nested_params %}
+  {% if not param.is_array and (param.minimum is not none or param.maximum is not none) %}
+  // Validate {{ param.cpp_name }}
+  {% if param.minimum is not none %}
+  if ({{ param.cpp_name }} < {{ param.minimum }}) {
+    throw std::runtime_error(
+      "Parameter '{{ param.name }}' must be >= {{ param.minimum }}, got " + 
+      std::to_string({{ param.cpp_name }}));
+  }
+  {% endif %}
+  {% if param.maximum is not none %}
+  if ({{ param.cpp_name }} > {{ param.maximum }}) {
+    throw std::runtime_error(
+      "Parameter '{{ param.name }}' must be <= {{ param.maximum }}, got " + 
+      std::to_string({{ param.cpp_name }}));
+  }
+  {% endif %}
+  {% endif %}
+  {% if param.is_array and (param.minimum is not none or param.maximum is not none) %}
+  // Validate array elements of {{ param.cpp_name }}
+  for (size_t i = 0; i < {{ param.cpp_name }}.size(); ++i) {
+    {% if param.minimum is not none %}
+    if ({{ param.cpp_name }}[i] < {{ param.minimum }}) {
+      throw std::runtime_error(
+        "Parameter '{{ param.name }}[" + std::to_string(i) + "]' must be >= {{ param.minimum }}, got " + 
+        std::to_string({{ param.cpp_name }}[i]));
+    }
+    {% endif %}
+    {% if param.maximum is not none %}
+    if ({{ param.cpp_name }}[i] > {{ param.maximum }}) {
+      throw std::runtime_error(
+        "Parameter '{{ param.name }}[" + std::to_string(i) + "]' must be <= {{ param.maximum }}, got " + 
+        std::to_string({{ param.cpp_name }}[i]));
+    }
+    {% endif %}
+  }
+  {% endif %}
+  {% if param.enum_values %}
+  // Validate enum for {{ param.cpp_name }}
+  {
+    const std::vector<{{ param.cpp_type }}> valid_values = {
+      {% for val in param.enum_values %}{{ val|cpp_default(param.cpp_type) }}{% if not loop.last %}, {% endif %}{% endfor %}
+    };
+    if (std::find(valid_values.begin(), valid_values.end(), {{ param.cpp_name }}) == valid_values.end()) {
+      throw std::runtime_error("Invalid value for parameter '{{ param.name }}'");
+    }
+  }
+  {% endif %}
+  {% endfor %}
+}
+
+{% endfor %}
+
+void {{ class_name }}::load(rclcpp::Node * node) {
+  {% for param in params %}
+  {% if param.is_nested %}
+  {{ param.cpp_name }}.load(node, "{{ param.name }}");
+  {% elif param.is_array %}
+  {{ param.cpp_name }} = node->get_parameter("{{ param.name }}").{{ param.rclcpp_getter }}();
+  {% else %}
+  {{ param.cpp_name }} = node->get_parameter("{{ param.name }}").{{ param.rclcpp_getter }}();
+  {% endif %}
+  {% endfor %}
+  
+  validate();
+}
+
+void {{ class_name }}::declare_and_load(rclcpp::Node * node) {
+  {% for param in params %}
+  {% if param.is_nested %}
+  {{ param.cpp_name }}.declare_and_load(node, "{{ param.name }}");
+  {% elif param.is_array %}
+  {{ param.cpp_name }} = node->declare_parameter<{{ param.cpp_type }}>(
+    "{{ param.name }}"{% if param.default %}, {{ param.default|cpp_array_default(param.array_item_type) }}{% endif %});
+  {% else %}
+  {{ param.cpp_name }} = node->declare_parameter<{{ param.cpp_type }}>(
+    "{{ param.name }}"{% if param.default %}, {{ param.default|cpp_default(param.cpp_type) }}{% endif %});
+  {% endif %}
+  {% endfor %}
+  
+  validate();
+}
+
+void {{ class_name }}::validate() const {
+  {% for param in params %}
+  {% if param.is_nested %}
+  {{ param.cpp_name }}.validate();
+  {% endif %}
+  {% if not param.is_nested and not param.is_array and (param.minimum is not none or param.maximum is not none) %}
+  validate_{{ param.cpp_name }}();
+  {% endif %}
+  {% if param.is_array and (param.minimum is not none or param.maximum is not none) %}
+  // Validate array elements of {{ param.cpp_name }}
+  for (size_t i = 0; i < {{ param.cpp_name }}.size(); ++i) {
+    {% if param.minimum is not none %}
+    if ({{ param.cpp_name }}[i] < {{ param.minimum }}) {
+      throw std::runtime_error(
+        "Parameter '{{ param.name }}[" + std::to_string(i) + "]' must be >= {{ param.minimum }}, got " + 
+        std::to_string({{ param.cpp_name }}[i]));
+    }
+    {% endif %}
+    {% if param.maximum is not none %}
+    if ({{ param.cpp_name }}[i] > {{ param.maximum }}) {
+      throw std::runtime_error(
+        "Parameter '{{ param.name }}[" + std::to_string(i) + "]' must be <= {{ param.maximum }}, got " + 
+        std::to_string({{ param.cpp_name }}[i]));
+    }
+    {% endif %}
+  }
+  {% endif %}
+  {% if param.enum_values %}
+  // Validate enum for {{ param.cpp_name }}
+  {
+    const std::vector<{{ param.cpp_type }}> valid_values = {
+      {% for val in param.enum_values %}{{ val|cpp_default(param.cpp_type) }}{% if not loop.last %}, {% endif %}{% endfor %}
+    };
+    if (std::find(valid_values.begin(), valid_values.end(), {{ param.cpp_name }}) == valid_values.end()) {
+      throw std::runtime_error("Invalid value for parameter '{{ param.name }}'");
+    }
+  }
+  {% endif %}
+  {% endfor %}
+}
+
+{% for param in params %}
+{% if not param.is_nested and not param.is_array and (param.minimum is not none or param.maximum is not none) %}
+void {{ class_name }}::validate_{{ param.cpp_name }}() const {
+  {% if param.minimum is not none %}
+  if ({{ param.cpp_name }} < {{ param.minimum }}) {
+    throw std::runtime_error(
+      "Parameter '{{ param.name }}' must be >= {{ param.minimum }}, got " + 
+      std::to_string({{ param.cpp_name }}));
+  }
+  {% endif %}
+  {% if param.maximum is not none %}
+  if ({{ param.cpp_name }} > {{ param.maximum }}) {
+    throw std::runtime_error(
+      "Parameter '{{ param.name }}' must be <= {{ param.maximum }}, got " + 
+      std::to_string({{ param.cpp_name }}));
+  }
+  {% endif %}
+}
+{% endif %}
+{% endfor %}
+
+void {{ class_name }}::print(const rclcpp::Logger & logger) const {
+  RCLCPP_INFO(logger, "=== Parameters ===");
+  {% for param in params %}
+  {% if param.is_nested %}
+  RCLCPP_INFO(logger, "  {{ param.name }}: [nested object]");
+  {% elif param.is_array %}
+  {
+    std::ostringstream oss;
+    oss << "[";
+    for (size_t i = 0; i < {{ param.cpp_name }}.size(); ++i) {
+      if (i > 0) oss << ", ";
+      {% if param.array_item_type == 'string' %}
+      oss << {{ param.cpp_name }}[i];
+      {% elif param.array_item_type == 'boolean' %}
+      oss << ({{ param.cpp_name }}[i] ? "true" : "false");
+      {% else %}
+      oss << {{ param.cpp_name }}[i];
+      {% endif %}
+    }
+    oss << "]";
+    RCLCPP_INFO(logger, "  {{ param.name }}: %s", oss.str().c_str());
+  }
+  {% elif param.cpp_type == 'std::string' %}
+  RCLCPP_INFO(logger, "  {{ param.name }}: %s", {{ param.cpp_name }}.c_str());
+  {% elif param.cpp_type == 'bool' %}
+  RCLCPP_INFO(logger, "  {{ param.name }}: %s", {{ param.cpp_name }} ? "true" : "false");
+  {% elif param.cpp_type == 'double' %}
+  RCLCPP_INFO(logger, "  {{ param.name }}: %f", {{ param.cpp_name }});
+  {% elif param.cpp_type == 'int64_t' %}
+  RCLCPP_INFO(logger, "  {{ param.name }}: %ld", {{ param.cpp_name }});
+  {% endif %}
+  {% endfor %}
+}
+
+}  // namespace {{ namespace }}
