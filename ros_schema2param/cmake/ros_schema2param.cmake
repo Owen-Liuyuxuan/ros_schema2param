@@ -60,9 +60,9 @@ function(ros2_generate_parameter_loader)
     file(MAKE_DIRECTORY ${ARG_OUTPUT_DIR})
 
     # Find generator script
-    find_package(ros2_schema_tools REQUIRED)
-    set(GENERATOR_SCRIPT "${ros2_schema_tools_DIR}/../../../lib/ros2_schema_tools/generate_param_loader.py")
-    set(TEMPLATE_DIR "${ros2_schema_tools_DIR}/../../../share/ros2_schema_tools/templates")
+    find_package(ros_schema2param REQUIRED)
+    set(GENERATOR_SCRIPT "${ros_schema2param_DIR}/../../../lib/ros_schema2param/generate_param_loader.py")
+    set(TEMPLATE_DIR "${ros_schema2param_DIR}/../../../share/ros_schema2param/templates")
 
     # Output files
     set(GENERATED_HEADER "${ARG_OUTPUT_DIR}/${ARG_CLASS_NAME}.hpp")

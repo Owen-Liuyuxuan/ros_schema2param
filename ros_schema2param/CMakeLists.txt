@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(ros2_schema_tools)
+project(ros_schema2param)
 
 # ============================================================================
 # Dependencies
@@ -27,7 +27,7 @@ endif()
 # Install CMake Functions
 # ============================================================================
 install(
-    FILES cmake/ros2_schema_tools.cmake
+    FILES cmake/ros_schema2param.cmake
     DESTINATION share/${PROJECT_NAME}/cmake
 )
 
@@ -60,7 +60,7 @@ ament_export_dependencies(rclcpp)
 
 # Export CMake functions for downstream packages
 ament_environment_hooks(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ros2_schema_tools-extras.cmake.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ros_schema2param-extras.cmake.in"
 )
 
 if(BUILD_TESTING)
@@ -69,5 +69,5 @@ if(BUILD_TESTING)
 endif()
 
 ament_package(
-    CONFIG_EXTRAS cmake/ros2_schema_tools.cmake
+    CONFIG_EXTRAS cmake/ros_schema2param.cmake
 )

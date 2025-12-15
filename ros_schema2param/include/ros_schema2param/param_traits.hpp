@@ -5,7 +5,7 @@
 #include <vector>
 #include <array>
 
-namespace ros2_schema_tools {
+namespace ros_schema2param {
 
 /**
  * @brief Type traits for ROS2 parameter types
@@ -83,4 +83,4 @@ void validate_range(
   }
 }
 
-}  // namespace ros2_schema_tools
+}  // namespace ros_schema2param

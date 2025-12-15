@@ -13,7 +13,7 @@
 
   <depend>rclcpp</depend>
   
-  <build_depend>ros2_schema_tools</build_depend>
+  <build_depend>ros_schema2param</build_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

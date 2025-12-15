@@ -6,7 +6,7 @@ project(dummy_perception_example)
 # ============================================================================
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(ros2_schema_tools REQUIRED)
+find_package(ros_schema2param REQUIRED)
 find_package(ament_cmake_auto REQUIRED)
 
 ament_auto_find_build_dependencies()

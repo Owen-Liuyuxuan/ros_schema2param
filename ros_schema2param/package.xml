@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>ros2_schema_tools</name>
+  <name>ros_schema2param</name>
   <version>1.0.0</version>
-  <description>Tools for generating ROS2 parameter loaders from JSON Schema</description>
+  <description>ROS2 JSON Schema to Parameter loader code generator - Automatically generates type-safe C++ parameter loading code from JSON Schema definitions</description>
   <maintainer email="owen@example.com">Owen</maintainer>
   <license>Apache-2.0</license>
 
